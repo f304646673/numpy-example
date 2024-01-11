@@ -21,6 +21,7 @@ rot90RightWithThreeImg = Image.fromarray(rot90RightWithThree)
 rot90RightWithThreeImg.save('rot90rightthree.png')
 
 rot90RightWithAOnexes = np.rot90(data, 1, axes=(1,0))
+
 rot90RightWithAOnexesImg = Image.fromarray(rot90RightWithAOnexes)
 rot90RightWithAOnexesImg.save('rot90rightaonexes.png')
 
@@ -34,15 +35,3 @@ rot180WithRightMinusTwo = np.rot90(data, -2)
 
 rot180WithRightMinusTwoImg = Image.fromarray(rot180WithRightMinusTwo)
 rot180WithRightMinusTwoImg.save('rot180rightminustwo.png')
-
-
-# colorDim3List = np.dsplit(data, 3)
-# red = colorDim3List[0].reshape((data.shape[0], data.shape[1]))
-# green = colorDim3List[1].reshape((data.shape[0], data.shape[1]))
-# blue = colorDim3List[2].reshape((data.shape[0], data.shape[1]))
-
-# redRot90=np.rot90(red)
-# greenRot90=np.rot90(green)
-# blueRot90=np.rot90(blue)
-
-# rot90=np.dstack((redRot90,greenRot90,blueRot90))
