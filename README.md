@@ -27,4 +27,7 @@ source env.sh install numpy pillow scipy
 
 ![percentile]([https://github.com/f304646673/numpy-example/blob/main/blur/percentile.png#pic_center)
 
-![correlate]([https://github.com/f304646673/numpy-example/blob/main/blur/correlate.png#pic_center)
+![correlate]([https://github.com/f304646673/numpy-example/blob/main/blur/correlate.png)
+
+
+![请添加图片描述](https://img-blog.csdnimg.cn/direct/1bdfcadd204d4a8f825f8644bd80a56d.png)
