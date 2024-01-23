@@ -19,15 +19,12 @@ source env.sh install numpy pillow scipy
 - [《使用numpy处理图片——滚动图片》](https://github.com/f304646673/numpy-example/blob/main/roll)
 
 # 图片样例
-![median]([https://github.com/f304646673/numpy-example/blob/main/blur/median.png)
+![uniform_filter](https://img-blog.csdnimg.cn/direct/3c2ae3c61c094231861092425e5b392b.png#pic_center)
 
-![gaussianlaplace]([https://github.com/f304646673/numpy-example/blob/main/blur/gaussianlaplace.png#pic_center)
+![gaussianlaplace](https://img-blog.csdnimg.cn/direct/23599bf6998a4de5a2522146a9f8dc10.png#pic_center)
 
-![morphologicallaplace]([https://github.com/f304646673/numpy-example/blob/main/blur/morphologicallaplace.png#pic_center)
+![morphologicallaplace](https://img-blog.csdnimg.cn/direct/97eaab106640484b84a6dd7ab79c5b35.png#pic_center)
 
-![percentile]([https://github.com/f304646673/numpy-example/blob/main/blur/percentile.png#pic_center)
+![whitetophat](https://img-blog.csdnimg.cn/direct/0c3f8f6cacd2448cb41068e1eb59f567.png#pic_center)
 
-![correlate]([https://github.com/f304646673/numpy-example/blob/main/blur/correlate.png)
-
-
-![请添加图片描述](https://img-blog.csdnimg.cn/direct/1bdfcadd204d4a8f825f8644bd80a56d.png)
+![blacktophat](https://img-blog.csdnimg.cn/direct/0b6b3f611db647a9b39e4d1bcc251814.png#pic_center)
