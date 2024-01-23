@@ -15,7 +15,8 @@ source env.sh install numpy pillow scipy
 - [《使用numpy处理图片——90度旋转》](https://github.com/f304646673/numpy-example/blob/main/rot90)
 - [《使用numpy处理图片——缩放图片》](https://github.com/f304646673/numpy-example/blob/main/compress)
 - [《使用numpy处理图片——分离通道》](https://github.com/f304646673/numpy-example/blob/main/rgb)
-- [《使用numpy处理图片——二值图像》](https://github.com/f304646673/numpy-example/blob/main/blur)
+- [《使用numpy处理图片——灰阶影像》](https://github.com/f304646673/numpy-example/blob/main/grey)
+- [《使用numpy处理图片——二值图像》](https://github.com/f304646673/numpy-example/blob/main/grey)
 - [《使用numpy处理图片——滚动图片》](https://github.com/f304646673/numpy-example/blob/main/roll)
 
 # 图片样例
