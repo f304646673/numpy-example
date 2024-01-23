@@ -1,65 +1,51 @@
-在[《使用numpy处理图片——镜像翻转和旋转》](https://blog.csdn.net/breaksoftware/article/details/135487319)一文中，我们介绍了如何将图片旋转的方法。本文将使用更简单的方法旋转图片90度。
-# 左旋转90度
+在[《使用numpy处理图片——90度旋转》](https://blog.csdn.net/breaksoftware/article/details/135534921)中，我们使用numpy提供的方法，可以将矩阵旋转90度。而如果我们需要旋转任意角度，则需要自己撸很多代码。如果我们使用scipy库提供的方法，则会容易很多。
+需要注意的是，旋转导致原始的图片会“撑开”修改后的图片大小。当然我们也可以通过参数设置，让图片大小不变，但是会让部分图片显示不出来。
+
+# 载入图片
 
 ```python
 import numpy as np
 import PIL.Image as Image
+import scipy.ndimage as ndimage
 
 data = np.array(Image.open('the_starry_night.jpg'))
-
-# left 90
-rot90LeftWithOne = np.rot90(data, 1)
-
-rot90LeftWithOneImg = Image.fromarray(rot90LeftWithOne)
-rot90LeftWithOneImg.save('rot90leftone.png')
 ```
-rot90第二个参数传递1，表示向左旋转90度1一次。
+![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/cb204335469245058b578ff2c0c8a771.jpeg#pic_center)
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/187ba3fa0b8f4648bac80af9d623991d.png#pic_center)
-# 向右旋转90
-向右旋转90度，可以理解成向左旋转3次90度。
+# 左旋转30度，且重新调整图片大小
 
 ```python
-rot90RightWithThree = np.rot90(data, 3)
+left30 = ndimage.rotate(data, 30)
 
-rot90RightWithThreeImg = Image.fromarray(rot90RightWithThree)
-rot90RightWithThreeImg.save('rot90rightthree.png')
+Image.fromarray(left30).save('left30.png')
 ```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/f9069738c900413da7bd1640cbf251ce.png#pic_center)
 
-或者直接给rot90传递-1，表示向右旋转90度。
+
+# 右旋转30度，且重新调整图片大小
 
 ```python
-rot90RightWithMinusOne = np.rot90(data, -1)
+right30 = ndimage.rotate(data, -30)
 
-rot90RightWithMinusOneImg = Image.fromarray(rot90RightWithMinusOne)
-rot90RightWithMinusOneImg.save('rot90rightminusone.png')
+Image.fromarray(right30).save('right30.png')
 ```
-或者将轴转置旋转
+![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/41c5b64be48f467c9f35460cd6518933.png#pic_center)
+# 左旋转135度，保持图片大小不变
+注意我们给reshape参数传递了False，即不调整图片大小
+```python
+left135 = ndimage.rotate(data, 135, reshape=False)
+
+Image.fromarray(left135).save('left135.png')
+```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/e309c52629f9425ab3be1277ef670d44.png#pic_center)
+
+# 右旋转135度，保持图片大小不变
 
 ```python
-rot90RightWithAOnexes = np.rot90(data, 1, axes=(1,0))
+right135 = ndimage.rotate(data, -135, reshape=False)
 
-rot90RightWithAOnexesImg = Image.fromarray(rot90RightWithAOnexes)
-rot90RightWithAOnexesImg.save('rot90rightaonexes.png')
+Image.fromarray(right135).save('right135.png')
 ```
-
-![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/03996a56b6f440dba43236647d656efc.png#pic_center)
-## 旋转180度
-向左旋转2次90度和向右旋转2次90度，都可以达到旋转180度的目的。
-
-```python
-rot180WithLeftTwice = np.rot90(data, 2)
-
-rot180WithLeftTwiceImg = Image.fromarray(rot180WithLeftTwice)
-rot180WithLeftTwiceImg.save('rot180lefttwice.png')
-```
-
-```python
-rot180WithRightMinusTwo = np.rot90(data, -2)
-
-rot180WithRightMinusTwoImg = Image.fromarray(rot180WithRightMinusTwo)
-rot180WithRightMinusTwoImg.save('rot180rightminustwo.png')
-```
-![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/ac648204ee454e7ab8dbfaea6c88ac18.png#pic_center)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/04f04798e5d54f9ab4f5c852306779f6.png#pic_center)
 # 代码地址
-[https://github.com/f304646673/numpy-example/tree/main/rot90](https://github.com/f304646673/numpy-example/tree/main/rot90)
+[https://github.com/f304646673/scipy-ndimage-example/tree/main/rot](https://github.com/f304646673/scipy-ndimage-example/tree/main/rot)
