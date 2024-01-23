@@ -1,36 +1,52 @@
-在[《使用numpy处理图片——基础操作》](https://fangliang.blog.csdn.net/article/details/135484022)一文中，我们通过对所有像素的alpha值做修改，让图片变成半透明。
-![原图](https://img-blog.csdnimg.cn/direct/1bdfcadd204d4a8f825f8644bd80a56d.png#pic_center)
-![统一进行alpha修改后的图](https://img-blog.csdnimg.cn/direct/aaf7570c2086415984f4551f3e8e8689.png#pic_center)
-我们看到本来是黑色的字体也因为半透明的原因变得颜色比较淡。
-本文我们将判断每个像素的RGB值。如果是纯白底色，则将该像素的alpha值调整到0，以达到全透明的程度，否则不做调整。
-我们基本的思路就是遍历这个三维数组。这次使用的是nditer方法，它可以辅助我们进行遍历操作，而不是写三层for循环。
-由于我们的逻辑需要将RGBA当做一个像素点去看待，而遍历操作会将它们当成4个独立的迭代器去看，失去了关联性。于是我们需要引入每个迭代器所代表元素的坐标来建立它们之间的关系。这样nditer的flags参数我们就传递了multi_index，以让迭代器返回坐标。比如第一个迭代器的multi_index值就是[0,0,0]。第三个维度就是RGBA的信息：坐标0表示红色（R），坐标1表示绿色（G），坐标2表示蓝色（B），坐标3表示Alpha值。如果RGB的值都是255，则说明其是白色，那就直接修改其alpha的值为0，以让这个像素点全透明。为了在遍历过程中可以修改被遍历的对象，需要给op_flags传递和“写入”相关的选项，比如writeonly和readwrite。否则nditer的迭代器就是只读的，写入将失败。
-在进行修改操作时，nditer迭代器并不会马上修改原来的数据，而是将修改后的值放在一个缓冲区数组中。我们需要在适当的时机告诉它可以将换冲区数组复制到原数组中。于是可以通过with关键字来管理其上下文，以在迭代结束后通知nditer去回写；或者主动调用close方法，来触发回写。
+numpy是一款非常优秀的处理多维数组的Python基础包。在现实中，我们最经常接触的多维数组相关的场景就是图像处理。本系列将通过若干篇对图像处理相关的探讨，来介绍numpy的使用方法，以获得直观的体验。
+本系列使用的照片使用的是RGBA色彩空间模型，即一个像素点，要通过R（Red红色）、G（Green绿色）、B（Blue蓝色）和A（Alpha通道）组成。前三种三原色比较好理解，即一个颜色可以通过红绿蓝三种颜色组成；Alpha则是代表透明度，0代表完全透明，255代表完全不透明，中间的数值则代表相应程度的半透明。
+![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/08b714d83d754034bce887f41649e4f5.png)
+
+![请添加图片描述](https://img-blog.csdnimg.cn/direct/28a573740c5140ae962b310eb3d384cc.png)![请添加图片描述](https://img-blog.csdnimg.cn/direct/dfa045f6265e4bafa76550e30a26f4ce.png)
+可以看到Alpha 255的图片，背景是白色的，且是不透明的；而Alpha 0背景区域是完全透明。
+一张图片，我们看成是一个像素组成的二维数组；
+![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/ac63daafaa574f4d856f5211b42329e4.png)
+如果每个像素用RGBA表示，则演变成一个三维数组。只是之前的每个元素变成了一个长度为4的维度。
+# 准备工作
+下面是一张960*1536，背景色是白色，完全不透明的图片——example.png。后面我们将针对这张图片做相关处理。
+![请添加图片描述](https://img-blog.csdnimg.cn/direct/1bdfcadd204d4a8f825f8644bd80a56d.png)
+为了能读取图片，我们需要安装另外一个python包
+
+```bash
+pip3 install pillow
+```
+# 图片像素大小
+如果翻译成numpy相关的知识，就是获取数组的大小。这儿我们要使用[shape属性](https://numpy.org/doc/stable/reference/generated/numpy.shape.html)。
 
 ```python
-import numpy as np
 from PIL import Image
+import numpy as np
+img = Image.open('example.png')
+data = np.array(img)
+print(data.shape)
+```
 
+> (960, 1536, 4)
+
+可以见得我们将图片变成了一个3维数组：960表示高度，1536表示宽度，4表示深度。
+![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/2a72a9edf56f4bfc850ae758c3dc4f43.png)
+# 修改透明度
+如果翻译成numpy相关的知识，就是修改数组中第三个维度（RGBA）的第四个位置（A）的值。
+
+```python
+from PIL import Image
+import numpy as np
 img = Image.open('example.png')
 data = np.array(img)
 
-with np.nditer(data, flags=['multi_index'], op_flags=['writeonly']) as it:
-    while not it.finished:
-        if it.multi_index[2] == 3:
-            if r == g == b == 255:
-                it[0] = 0
-        elif it.multi_index[2] == 0:
-            r = it[0]
-        elif it.multi_index[2] == 1:
-            g = it[0]
-        elif it.multi_index[2] == 2:
-            b = it[0]
-        is_not_finished = it.iternext()
-        
-horizontalImg = Image.fromarray(data)
-horizontalImg.save('alpha0.png')
+data[:,:,3]= 32
+
+newImg = Image.fromarray(data)
+newImg.save('alpha32.png')
 ```
-我们看到生成的图片比之前粗暴的将所有像素的alpha改成32的图上的字要清楚。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/d50aeee24d834aceae7257371d34f2b5.png#pic_center)
+上面代码将Alpha通道值改成了32，即一种半透明状态。
+代码的第6行，第一个“:”表示所有的第一维度（高），第二个“:”表示所有的第二维度（宽），3表示Alpha通道所在的RGBA中的下标。
+这种写法，比逐个遍历数据要方便的多。
+![请添加图片描述](https://img-blog.csdnimg.cn/direct/aaf7570c2086415984f4551f3e8e8689.png)
 # 代码地址
-[https://github.com/f304646673/numpy-example/tree/main/alpha](https://github.com/f304646673/numpy-example/tree/main/alpha)
+[https://github.com/f304646673/numpy-example/tree/main/basic](https://github.com/f304646673/numpy-example/tree/main/basic)
