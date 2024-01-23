@@ -20,7 +20,11 @@ source env.sh install numpy pillow scipy
 
 # 图片样例
 ![在这里插入图片描述]([https://github.com/f304646673/numpy-example/blob/main/blur/median.png)
+
 ![在这里插入图片描述]([https://github.com/f304646673/numpy-example/blob/main/blur/gaussianlaplace.png#pic_center)
+
 ![在这里插入图片描述]([https://github.com/f304646673/numpy-example/blob/main/blur/morphologicallaplace.png#pic_center)
+
 ![在这里插入图片描述]([https://github.com/f304646673/numpy-example/blob/main/blur/percentile.png#pic_center)
+
 ![在这里插入图片描述]([https://github.com/f304646673/numpy-example/blob/main/blur/correlate.png#pic_center)
